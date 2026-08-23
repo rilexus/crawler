@@ -1,0 +1,28 @@
+{
+  "name": "html-to-markdown",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "build": "esbuild index.js --bundle --platform=node --target=node22 --format=esm --outfile=dist/index.js --external:puppeteer --banner:js=\"import{createRequire}from'module';const require=createRequire(import.meta.url);\"",
+    "watch": "esbuild index.js --bundle --platform=node --target=node22 --format=esm --outfile=dist/index.js --external:puppeteer --banner:js=\"import{createRequire}from'module';const require=createRequire(import.meta.url);\" --watch",
+    "start:dist": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.35",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "ai": "^7.0.77",
+    "express": "^5.2.1",
+    "puppeteer": "^25.8.0",
+    "turndown": "^7.2.4",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}
