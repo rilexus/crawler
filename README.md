@@ -1,4 +1,4 @@
-# html-to-markdown
+# website-to-markdown
 
 An MCP (Model Context Protocol) server that converts a rendered web page into clean Markdown. It exposes a single tool, `website-to-markdown`, that opens a URL in a headless browser, converts the page to Markdown, and uses a local LLM (via [LM Studio](https://lmstudio.ai)) to clean up the result.
 
@@ -48,8 +48,8 @@ npm run start:dist
 ## Running with Docker
 
 ```bash
-docker build -t html-to-markdown .
-docker run -p 3000:3000 -e LM_STUDIO_MODEL=<your-loaded-model-id> html-to-markdown
+docker build -t website-to-markdown .
+docker run -p 3000:3000 -e LM_STUDIO_MODEL=<your-loaded-model-id> website-to-markdown
 ```
 
 The container reaches LM Studio on your host machine via `host.docker.internal` by default. Override `LM_STUDIO_BASE_URL` if LM Studio runs elsewhere. On Linux, add `--add-host=host.docker.internal:host-gateway` to the `docker run` command, since Linux doesn't resolve that hostname by default.
@@ -57,7 +57,7 @@ The container reaches LM Studio on your host machine via `host.docker.internal` 
 To keep the container running across restarts:
 
 ```bash
-docker run -d --name html-to-markdown --restart unless-stopped -p 3000:3000 -e LM_STUDIO_MODEL=<your-loaded-model-id> html-to-markdown
+docker run -d --name website-to-markdown --restart unless-stopped -p 3000:3000 -e LM_STUDIO_MODEL=<your-loaded-model-id> website-to-markdown
 ```
 
 ## Testing

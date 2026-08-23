@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run watch` — same as `build`, but rebuilds `dist/index.js` on file changes (esbuild `--watch`). Pair with `npm run start:dist` in another terminal.
 - `npm run start:dist` — run the bundled output.
 - There is no test suite (`npm test` is a stub that exits with an error) and no lint script. `./test-website-to-markdown.sh <url> [output-file]` is a manual smoke-test script: it runs the full MCP handshake against a running server (`initialize` → capture `mcp-session-id` → `notifications/initialized` → `tools/call`), then JSON-decodes the response and writes the resulting Markdown to `output-file` (default `output.md`).
-- Docker: `docker build -t html-to-markdown .` builds via a two-stage build that runs `npm run build`, then installs runtime deps (`npm ci --omit=dev`) alongside Alpine's `chromium` package; the container listens on port 3000.
+- Docker: `docker build -t website-to-markdown .` builds via a two-stage build that runs `npm run build`, then installs runtime deps (`npm ci --omit=dev`) alongside Alpine's `chromium` package; the container listens on port 3000.
 - Requires a local [LM Studio](https://lmstudio.ai) server running (Developer > Start Server) with a model loaded — the `website-to-markdown` tool calls out to it for every request. Configure via env vars: `LM_STUDIO_BASE_URL` (default `http://127.0.0.1:1234/v1` — use `127.0.0.1`, not `localhost`, since Node resolves `localhost` to the IPv6 `::1` first and LM Studio only listens on IPv4), `LM_STUDIO_API_KEY` (default `lm-studio`, unchecked by LM Studio), and `LM_STUDIO_MODEL` (default `qwen3.5-4b` — must match a model id LM Studio actually has loaded).
 
 ## Architecture

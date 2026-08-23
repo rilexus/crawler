@@ -11,6 +11,6 @@ app.delete("/mcp", handleSessionRequest);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(
-    `html-to-markdown MCP server listening on http://localhost:${PORT}/mcp`,
+    `website-to-markdown MCP server listening on http://localhost:${PORT}/mcp`,
   );
 });
