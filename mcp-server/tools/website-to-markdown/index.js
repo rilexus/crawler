@@ -12,8 +12,12 @@ export const config = {
   },
 };
 
-export async function handler({ url }) {
-  const text = await generate(url);
+export async function handler({ url }, extra) {
+  const apiKey = extra?.requestInfo?.headers?.authorization?.replace(
+    /^Bearer\s+/i,
+    "",
+  );
+  const text = await generate(url, apiKey);
   return {
     content: [{ type: "text", text }],
   };

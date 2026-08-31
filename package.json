@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
+    "dev": "node --watch index.js",
     "build": "esbuild index.js --bundle --platform=node --target=node22 --format=esm --outfile=dist/index.js --external:puppeteer --banner:js=\"import{createRequire}from'module';const require=createRequire(import.meta.url);\"",
     "watch": "esbuild index.js --bundle --platform=node --target=node22 --format=esm --outfile=dist/index.js --external:puppeteer --banner:js=\"import{createRequire}from'module';const require=createRequire(import.meta.url);\" --watch",
     "start:dist": "node dist/index.js",

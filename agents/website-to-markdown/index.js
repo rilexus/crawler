@@ -7,13 +7,14 @@ const turndown = new TurndownService();
 
 // Points at LM Studio's local server (Developer > Start Server in LM Studio).
 // LM Studio doesn't check the API key, so any placeholder value works.
-const lmstudio = createOpenAICompatible({
-  name: "lmstudio",
-  baseURL: process.env.LM_STUDIO_BASE_URL ?? "http://127.0.0.1:1234/v1",
-  apiKey: process.env.LM_STUDIO_API_KEY ?? "lm-studio",
-});
-
-const model = lmstudio(process.env.LM_STUDIO_MODEL ?? "qwen3.5-4b");
+function createModel(apiKey) {
+  const lmstudio = createOpenAICompatible({
+    name: "lmstudio",
+    baseURL: process.env.LM_STUDIO_BASE_URL ?? "http://127.0.0.1:1234/v1",
+    apiKey: apiKey,
+  });
+  return lmstudio(process.env.LM_STUDIO_MODEL ?? "qwen3.5-4b");
+}
 
 async function fetchBodyHtml(url) {
   const args = process.env.PUPPETEER_EXECUTABLE_PATH
@@ -34,11 +35,11 @@ async function fetchBodyHtml(url) {
   }
 }
 
-export async function generate(url) {
+export async function generate(url, apiKey) {
   const html = await fetchBodyHtml(url);
   const rawMarkdown = turndown.turndown(html);
   const { text } = await generateText({
-    model,
+    model: createModel(apiKey),
     system:
       "You clean up Markdown that was mechanically converted from a web page. Remove leftover navigation, ads, cookie banners, and duplicate links. Fix broken formatting and heading structure. Keep the actual content: headings, lists, links, and code blocks. Return only the cleaned Markdown, with no commentary.",
     prompt: rawMarkdown,
