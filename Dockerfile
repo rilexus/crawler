@@ -12,6 +12,7 @@ RUN npm ci
 COPY index.js ./
 COPY mcp-server ./mcp-server
 COPY agents ./agents
+COPY browser ./browser
 RUN npm run build
 
 FROM node:22-alpine

@@ -99,3 +99,14 @@ export async function resolveSelectorCandidates(url, selectorGroups) {
     }, selectorGroups),
   );
 }
+
+export async function fetchBodyHtml(url) {
+  return withPage(url, (page) =>
+    page.evaluate(() => {
+      document
+        .querySelectorAll("script, style, noscript, svg, meta, link, template")
+        .forEach((el) => el.remove());
+      return document.body.innerHTML;
+    }),
+  );
+}

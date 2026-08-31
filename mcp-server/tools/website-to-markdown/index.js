@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { generate } from "../../../agents/website-to-markdown/index.js";
+import { generateMarkdown } from "../../../agents/website-to-markdown/index.js";
 
 export const name = "website-to-markdown";
 
@@ -17,7 +17,7 @@ export async function handler({ url }, extra) {
     /^Bearer\s+/i,
     "",
   );
-  const text = await generate(url, apiKey);
+  const text = await generateMarkdown(url, apiKey);
   return {
     content: [{ type: "text", text }],
   };

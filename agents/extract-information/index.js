@@ -14,15 +14,15 @@ function createModel() {
   return lmstudio("deepseek-v4-flash");
 }
 
-export async function generateMarkdown(url) {
+export async function extractInformation(url, informationToExtract) {
   const html = await fetchBodyHtml(url);
   const rawMarkdown = turndown.turndown(html);
 
   const { text } = await generateText({
     model: createModel(),
-    system:
-      "You clean up Markdown that was mechanically converted from a web page. Remove leftover navigation, ads, cookie banners, and duplicate links. Fix broken formatting and heading structure. Keep the actual content: headings, lists, links, and code blocks. Return only the cleaned Markdown, with no commentary.",
+    system: `You extract specific information from Markdown that was mechanically converted from a web page. Extract only this: ${informationToExtract}. Ignore navigation, ads, cookie banners, and unrelated content. Return the extracted information as Markdown, preserving structure like lists, tables, and links where relevant. Return only the extracted information, with no commentary. If the page doesn't contain this information, return "Not found."`,
     prompt: rawMarkdown,
   });
+
   return text;
 }

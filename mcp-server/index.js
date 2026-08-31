@@ -7,6 +7,7 @@ import * as fetchTool from "./tools/fetch/index.js";
 import * as getElementTool from "./tools/get-element/index.js";
 import * as saveValueTool from "./tools/save-value/index.js";
 import * as crawlTool from "./tools/crawl/index.js";
+import * as extractInfoTool from "./tools/extract-from-url/index.js";
 
 const tools = [
   fetchTool,
@@ -14,6 +15,7 @@ const tools = [
   saveValueTool,
   crawlTool,
   websiteToMarkdownTool,
+  extractInfoTool,
 ];
 
 // Session ID -> transport, so repeat requests from the same client reuse
@@ -35,7 +37,12 @@ export async function handleSessionRequest(req, res) {
     res.status(404).send("Session not found");
     return;
   }
-  await transport.handleRequest(req, res);
+  try {
+    await transport.handleRequest(req, res);
+  } catch (err) {
+    console.error("Error handling MCP session request:", err);
+    if (!res.headersSent) res.status(500).send("Internal server error");
+  }
 }
 
 export const handlEMCPRequest = async (req, res) => {
@@ -76,7 +83,18 @@ export const handlEMCPRequest = async (req, res) => {
     await server.connect(transport);
   }
 
-  await transport.handleRequest(req, res, req.body);
+  try {
+    await transport.handleRequest(req, res, req.body);
+  } catch (err) {
+    console.error("Error handling MCP request:", err);
+    if (!res.headersSent) {
+      res.status(500).json({
+        jsonrpc: "2.0",
+        error: { code: -32603, message: "Internal server error" },
+        id: null,
+      });
+    }
+  }
 };
 
 export function createMcpServer() {
