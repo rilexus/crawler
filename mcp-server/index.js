@@ -99,7 +99,7 @@ export const handlEMCPRequest = async (req, res) => {
 
 export function createMcpServer() {
   const server = new McpServer({
-    name: "website-to-markdown",
+    name: "crawler",
     version: "1.0.0",
   });
 
